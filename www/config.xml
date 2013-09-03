@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "org.yriarte.phonegap-template"
+        version   = "0.0.1">
+
+    <name>Phonegap Template</name>
+
+    <description>
+        Phonegap template application that responds to the deviceready event.
+    </description>
+
+    <author href="http://www.yriarte.org" email="lyriarte@free.fr">
+        Luc Yriarte
+    </author>
+
+    <!--
+        Enable individual API permissions here.
+        The "device" permission is required for the 'deviceready' event.
+    -->
+    <feature name="http://api.phonegap.com/1.0/device" />
+
+    <!--
+        If you do not want any permissions to be added to your app, add the
+        following tag to your config.xml; you will still have the INTERNET
+        permission on your app, which PhoneGap requires.
+    -->
+    <preference name="permissions"                value="none"/>
+
+    <!-- Customize your app and platform with the preference element. -->
+    <preference name="phonegap-version"           value="2.9.0" />          <!-- all: current version of PhoneGap -->
+    <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
+    <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
+    <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
+
+    <!-- Denies access to all external resources -->
+    <access /> 
+    
+</widget>

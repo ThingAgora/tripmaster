@@ -1,0 +1,26 @@
+body {
+    background-color:#E4E4E4;
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:1em;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+h1 {
+    font-size:4em;
+    margin:0px;
+    padding:0px;
+    text-align:center;
+}
+
+.message {
+    background-color:#404040;
+    color:#FFFFFF;
+    font-size:2em;
+    margin:10px 20px;
+    padding:5px 10px;
+    text-align:center;
+}
