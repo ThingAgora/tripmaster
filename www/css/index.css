@@ -16,6 +16,10 @@ h1 {
     text-align:center;
 }
 
+h2 {
+    font-size:3em;
+}
+
 .message {
     background-color:#404040;
     color:#FFFFFF;
@@ -23,4 +27,26 @@ h1 {
     margin:10px 20px;
     padding:5px 10px;
     text-align:center;
+}
+
+.gridCell {
+    width:95%;
+    margin:1px 2px;
+}
+
+.button {
+    background-color:#282828;
+    color:#C0C0C0;
+    font-size:3em;
+    max-width:95%;
+    padding:2px 5px;
+    text-align:center;
+}
+
+.textField {
+    background-color:#E0E0E0;
+    color:#202020;
+    font-size:3em;
+    max-width:95%;
+    padding:2px 5px;
 }
