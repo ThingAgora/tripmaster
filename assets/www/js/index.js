@@ -5,8 +5,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-		this.statusArea = document.getElementById('statusArea');
-		this.statusArea.innerHTML = "initializing...";
+		this.speedometer = document.getElementById('speedometer');
     },
 
     // Bind Event Listeners
@@ -16,6 +15,6 @@ var app = {
 
     // deviceready Event Handler - The scope of 'this' is the event.
     onDeviceReady: function() {
-		app.statusArea.innerHTML = "ready";
+		app.speedometer.innerHTML = "0";
     }
 };
