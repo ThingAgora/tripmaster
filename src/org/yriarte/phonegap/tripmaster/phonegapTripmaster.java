@@ -17,13 +17,13 @@
        under the License.
  */
 
-package org.yriarte.phonegap.template;
+package org.yriarte.phonegap.tripmaster;
 
 import android.app.Activity;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
-public class phonegapTemplate extends DroidGap
+public class phonegapTripmaster extends DroidGap
 {
     @Override
     public void onCreate(Bundle savedInstanceState)

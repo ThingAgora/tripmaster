@@ -1,5 +1,5 @@
-PROJECT = tripmaster
-PKG_FILES = www
+PROJECT = phonegap-tripmaster
+PKG_FILES = assets/www
 
 VERSION := 1.0.0
 
