@@ -1,4 +1,4 @@
-PROJECT = phonegap-template
+PROJECT = tripmaster
 PKG_FILES = www
 
 VERSION := 1.0.0

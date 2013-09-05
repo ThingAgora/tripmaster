@@ -6,10 +6,10 @@
         id        = "org.yriarte.phonegap-template"
         version   = "0.0.1">
 
-    <name>Phonegap Template</name>
+    <name>Tripmaster</name>
 
     <description>
-        Phonegap template application that responds to the deviceready event.
+        Tripmaster application.
     </description>
 
     <author href="http://www.yriarte.org" email="lyriarte@free.fr">

@@ -1,1 +1,1 @@
-# PhoneGap Template Application
+# Tripmaster Application
