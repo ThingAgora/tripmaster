@@ -50,3 +50,12 @@ h2 {
     max-width:95%;
     padding:2px 5px;
 }
+
+.meterText {
+    background-color:#E0E0E0;
+    color:#202020;
+    font-family:'Courier New', Courier, monospace;
+    font-size:16em;
+    padding:5px 10px;
+    text-align:center;
+}

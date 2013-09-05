@@ -15,6 +15,6 @@ var app = {
 
     // deviceready Event Handler - The scope of 'this' is the event.
     onDeviceReady: function() {
-		app.speedometer.innerHTML = "0";
+		app.speedometer.innerHTML = "000";
     }
 };
