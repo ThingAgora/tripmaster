@@ -21,6 +21,8 @@ package org.yriarte.phonegap.tripmaster;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.WindowManager;
+import android.view.Window;
 import org.apache.cordova.*;
 
 public class phonegapTripmaster extends DroidGap
@@ -29,7 +31,10 @@ public class phonegapTripmaster extends DroidGap
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        // prevent running in background
         super.setBooleanProperty("keepRunning", false);
+        // prevent the screen from sleeping
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.loadUrl("file:///android_asset/www/index.html");
     }
 }
