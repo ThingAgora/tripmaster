@@ -11,6 +11,8 @@ var app = {
     // Bind Event Listeners
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('pause', this.onPause, false);
+        document.addEventListener('resume', this.onDeviceReady, false);
     },
 
     // Error management
@@ -34,6 +36,11 @@ var app = {
     	timeout: 10000,
     	enableHighAccuracy: true
     },
+    // clear position watch on device pause
+    onPause: function() {
+		app.speedometer.innerHTML = "---";
+		navigator.geolocation.clearWatch(app.positionWatchId);
+    },
     
     // deviceready Event Handler - The scope of 'this' is the event.
     onDeviceReady: function() {
@@ -43,4 +50,5 @@ var app = {
 		else
 			errorCb();
     }
+    
 };
