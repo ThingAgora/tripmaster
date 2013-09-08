@@ -6,7 +6,7 @@
         id        = "org.yriarte.phonegap-tripmaster"
         version   = "0.0.1">
 
-    <name>Phonegap Tripmaster</name>
+    <name>Tripmaster</name>
 
     <description>
         Tripmaster application.
