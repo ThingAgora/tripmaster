@@ -6,7 +6,7 @@ var app = {
 	views: ['speedometer', 'status'],
 	setView: function(index) {
 		app.currentView.style.display = 'none';
-		if (index > 0 && index < app.views.length) {
+		if (index >= 0 && index < app.views.length) {
 			app.currentView = app[app.views[index]];
 			app.currentView.style.display = 'block';
 		}
