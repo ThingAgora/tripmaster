@@ -22,6 +22,8 @@ var app = {
 		}
 		this.currentView = document.getElementById(this.views[0]);
 		this.currentView.style.display = 'block';
+		this.batteryStatusLog = document.getElementById("batteryStatusLog");
+		this.batteryStatusBar = document.getElementById("batteryStatusBar");
     },
 
     // Bind Event Listeners
@@ -31,7 +33,7 @@ var app = {
         document.addEventListener('resume', this.onDeviceReady, false);
     },
 
-    // Geolocation management (speedometer)
+    // Geolocation management (speedometer view)
     positionWatchId: -1,
     positionWatchCb: function(position) {
     	if (position.coords.speed) {
@@ -52,20 +54,20 @@ var app = {
     	app.speedometer.innerHTML = "XXX";
     },
     
-    // battery status management (status)
+    // battery status management (status view)
+    batteryLevelCritical: 15,
+    batteryLevelLow: 30,
     onBatteryStatus: function(status) {
-    	var batteryStatusLog = document.getElementById("batteryStatusLog");
-    	batteryStatusLog.innerHTML = "Battery level: " + status.level.toString() + "&#37;";
+    	app.batteryStatusLog.innerHTML = "Battery level: " + status.level.toString() + "&#37;";
     	if (status.isPlugged) 
-    		batteryStatusLog.innerHTML += " (charging)";
-    	var batteryStatusBar = document.getElementById("batteryStatusBar");
-    	batteryStatusBar.style.width = status.level.toString() + "%";
-    	if (status.level <= 10)
-    		batteryStatusBar.style.backgroundColor = "#FF0000";
-    	else if (status.level <= 25)
-    		batteryStatusBar.style.backgroundColor = "#FFFF00";
+    		app.batteryStatusLog.innerHTML += " (charging)";
+    	app.batteryStatusBar.style.width = status.level.toString() + "%";
+    	if (status.level <= app.batteryLevelCritical)
+    		app.batteryStatusBar.style.backgroundColor = "#FF0000";
+    	else if (status.level <= app.batteryLevelLow)
+    		app.batteryStatusBar.style.backgroundColor = "#FFFF00";
     	else
-    		batteryStatusBar.style.backgroundColor = "#00FF00";
+    		app.batteryStatusBar.style.backgroundColor = "#00FF00";
     },
     
     // device pause: clear watches
