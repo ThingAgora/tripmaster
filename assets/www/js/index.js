@@ -2,10 +2,26 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 var app = {
+	// Application views
+	views: ['speedometer', 'status'],
+	setView: function(index) {
+		app.currentView.style.display = 'none';
+		if (index > 0 && index < app.views.length) {
+			app.currentView = app[app.views[index]];
+			app.currentView.style.display = 'block';
+		}
+	},
+		
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-		this.speedometer = document.getElementById('speedometer');
+		this.navbar = document.getElementById(navbar);
+		for (var i in this.views) {
+			this[this.views[i]] = document.getElementById(this.views[i]);
+			this[this.views[i]].style.display = 'none';
+		}
+		this.currentView = document.getElementById(this.views[0]);
+		this.currentView.style.display = 'block';
     },
 
     // Bind Event Listeners
@@ -17,10 +33,10 @@ var app = {
 
     // Error management
     errorCb: function() {
-    	app.speedometer.innerHTML = "XXX";
+    	app.currentView.innerHTML = "XXX";
     },
     
-    // Geolocation management
+    // Geolocation management (speedometer)
     positionWatchId: -1,
     positionWatchCb: function(position) {
     	if (position.coords.speed) {

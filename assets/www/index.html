@@ -9,7 +9,15 @@
         <title>Tripmaster</title>
     </head>
     <body>
-        <div id="speedometer" class="meterText"></div>
+		<select id="navbar" class="navbar button" onchange="app.setView(this.selectedIndex)">
+			<option selected value="speedometer">Speedometer</option>
+			<option value="status">Status</option>
+		</select> 			
+		
+        <div id="speedometer" class="meterText" style="display:none"></div>
+        <div id="status" style="display:none">
+        	<h1>Status</h1>
+        </div>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
