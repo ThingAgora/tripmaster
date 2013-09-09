@@ -24,6 +24,7 @@ var app = {
 		this.currentView.style.display = 'block';
 		this.batteryStatusLog = document.getElementById("batteryStatusLog");
 		this.batteryStatusBar = document.getElementById("batteryStatusBar");
+		this.networkStatusLog = document.getElementById("networkStatusLog");
     },
 
     // Bind Event Listeners
@@ -69,7 +70,23 @@ var app = {
     	else
     		app.batteryStatusBar.style.backgroundColor = "#00FF00";
     },
-    
+
+    // network status management (status view)
+    networkStates: {},
+    networkStateInitialize: function() {
+	    app.networkStates[Connection.UNKNOWN]  = 'Unknown connection';
+	    app.networkStates[Connection.ETHERNET] = 'Ethernet connection';
+	    app.networkStates[Connection.WIFI]     = 'WiFi connection';
+	    app.networkStates[Connection.CELL_2G]  = 'Cell 2G connection';
+	    app.networkStates[Connection.CELL_3G]  = 'Cell 3G connection';
+	    app.networkStates[Connection.CELL_4G]  = 'Cell 4G connection';
+	    app.networkStates[Connection.CELL]     = 'Cell generic connection';
+	    app.networkStates[Connection.NONE]     = 'No network connection';
+    },
+    networkStateCb: function(networkState) {
+    	app.networkStatusLog.innerHTML = "Network:<br>" + app.networkStates[networkState];
+    },
+
     // device pause: clear watches
     onPause: function() {
 		app.speedometer.innerHTML = "---";
@@ -85,6 +102,12 @@ var app = {
 			app.positionWatchId = navigator.geolocation.watchPosition(app.positionWatchCb, app.geoErrorCb, app.positionWatchOptions);
 		else
 			geoErrorCb();
+		if (navigator.network) {
+			app.networkStateInitialize();
+			app.networkStateCb(navigator.network.connection.type);
+		}
+		else
+			app.networkStatusLog.innerHTML = "Network unavailable";
     }
     
 };
