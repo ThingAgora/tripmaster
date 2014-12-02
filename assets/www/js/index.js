@@ -3,7 +3,7 @@
  */
 var app = {
 	// Application views
-	views: ['speedometer', 'status'],
+	views: ['speedometer', 'location', 'status'],
 	setView: function(index) {
 		app.currentView.style.display = 'none';
 		if (index >= 0 && index < app.views.length) {
@@ -25,6 +25,8 @@ var app = {
 		this.batteryStatusLog = document.getElementById("batteryStatusLog");
 		this.batteryStatusBar = document.getElementById("batteryStatusBar");
 		this.networkStatusLog = document.getElementById("networkStatusLog");
+		this.latitudeText = document.getElementById("latitudeText");
+		this.longitudeText = document.getElementById("longitudeText");
     },
 
     // Bind Event Listeners
@@ -34,7 +36,7 @@ var app = {
         document.addEventListener('resume', this.onDeviceReady, false);
     },
 
-    // Geolocation management (speedometer view)
+    // Geolocation management (speedometer / location views)
     positionWatchId: -1,
     positionWatchCb: function(position) {
     	if (position.coords.speed) {
@@ -43,6 +45,8 @@ var app = {
     	}
     	else
     		app.speedometer.innerHTML = "000";
+    	app.latitudeText.innerHTML = position.coords.latitude;
+    	app.longitudeText.innerHTML = position.coords.longitude;
     },
     positionWatchOptions: {
     	frequency: 1000,
