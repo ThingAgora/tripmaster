@@ -20,6 +20,6 @@
         android:text="@string/speed_value"
         android:textAlignment="center"
         android:textColor="@color/teal_main"
-        android:textSize="192sp"
+        android:textSize="128sp"
         android:textStyle="bold" />
 </FrameLayout>
