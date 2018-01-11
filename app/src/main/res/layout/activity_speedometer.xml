@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/colorPrimary"
     tools:context="org.thingagora.tripmaster.SpeedometerActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -16,6 +16,10 @@
         android:id="@+id/speed_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fontFamily="monospace"
         android:text="@string/speed_value"
-        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="192sp"
+        android:textStyle="bold" />
 </FrameLayout>
