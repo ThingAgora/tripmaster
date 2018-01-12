@@ -1,18 +1,37 @@
 package org.thingagora.tripmaster;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.view.View;
+import android.widget.TextView;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SpeedometerActivity extends AppCompatActivity {
+public class SpeedometerActivity extends AppCompatActivity implements LocationListener {
+
+    // GPS Location update settings
+    static int minTimeUpdateSeconds = 1;
+    static float minDistanceUpdateMeters = 5;
+
+    // GPS Location manager and current location
+    LocationManager mLocationManager;
+    Location mLocation;
+
+    // Speedometer view settings
+    static int speedErrMarginKph = 10;
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -85,6 +104,19 @@ public class SpeedometerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Context appContext = getApplicationContext();
+
+        // Initialize location manager and current location
+        int permissionCheck = ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_FINE_LOCATION");
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            mLocationManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
+            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    minTimeUpdateSeconds * 1000,
+                    minDistanceUpdateMeters,
+                    this);
+            }
+
         setContentView(R.layout.activity_speedometer);
 
         mVisible = true;
@@ -103,6 +135,8 @@ public class SpeedometerActivity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         mContentView.setOnTouchListener(mDelayHideTouchListener);
+
+
     }
 
     @Override
@@ -155,5 +189,32 @@ public class SpeedometerActivity extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public void updateSpeedometer(int speed) {
+        ((TextView)findViewById(R.id.speed_text)).setText(Integer.valueOf(speed).toString());
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        float mps = location.getSpeed();
+        int kph = (int) (mps * 3.6);
+        updateSpeedometer(kph + speedErrMarginKph);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
