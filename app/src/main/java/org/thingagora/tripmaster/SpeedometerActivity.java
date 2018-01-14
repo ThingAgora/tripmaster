@@ -23,7 +23,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
     // GPS Location update settings
     static int minTimeUpdateSeconds = 1;
-    static float minDistanceUpdateMeters = 5;
+    static float minDistanceUpdateMeters = 0;
 
     // GPS Location manager and current location
     LocationManager mLocationManager;
