@@ -200,7 +200,11 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     public void onLocationChanged(Location location) {
         float mps = location.getSpeed();
         int kph = (int) (mps * 3.6);
-        updateSpeedometer(kph + speedErrMarginKph);
+        if (kph > speedErrMarginKph * 2)
+            kph += speedErrMarginKph;
+        else if (kph > speedErrMarginKph)
+            kph += speedErrMarginKph / 2;
+        updateSpeedometer(kph);
     }
 
     @Override
