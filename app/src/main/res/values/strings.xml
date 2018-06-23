@@ -2,4 +2,5 @@
     <string name="app_name">Tripmaster</string>
 
     <string name="speed_value">000</string>
+    <string name="time_value">00:00</string>
 </resources>

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluegreymid1"
+    android:keepScreenOn="true"
     tools:context="org.thingagora.tripmaster.SpeedometerActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -12,15 +13,32 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <TextView
-        android:id="@+id/speed_text"
-        android:keepScreenOn="true"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="monospace"
-        android:text="@string/speed_value"
-        android:textAlignment="center"
-        android:textColor="@color/teal_main"
-        android:textSize="128sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/speed_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="@string/speed_value"
+            android:textAlignment="center"
+            android:textColor="@color/teal_main"
+            android:textSize="128sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/time_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="@string/time_value"
+            android:textAlignment="center"
+            android:textColor="@color/teal_main"
+            android:textSize="96sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </FrameLayout>

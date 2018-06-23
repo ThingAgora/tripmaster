@@ -15,6 +15,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
+import java.util.Calendar;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -106,6 +108,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
         Context appContext = getApplicationContext();
 
+
         // Initialize location manager and current location
         int permissionCheck = ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_FINE_LOCATION");
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
@@ -135,7 +138,6 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         mContentView.setOnTouchListener(mDelayHideTouchListener);
-
 
     }
 
@@ -189,6 +191,12 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public void updateTime() {
+        Calendar now = Calendar.getInstance();
+        String nowstr = String.format("%02d:%02d",now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE));
+        ((TextView)findViewById(R.id.time_text)).setText(nowstr);
     }
 
     public void updateSpeedometer(int speed) {
