@@ -193,8 +193,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public void updateTime() {
-        Calendar now = Calendar.getInstance();
+    public void updateTime(Calendar now) {
         String nowstr = String.format("%02d:%02d",now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE));
         ((TextView)findViewById(R.id.time_text)).setText(nowstr);
     }
@@ -213,6 +212,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         else if (kph > speedErrMarginKph)
             kph += speedErrMarginKph / 2;
         updateSpeedometer(kph);
+        updateTime(Calendar.getInstance());
     }
 
     @Override
