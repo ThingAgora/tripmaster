@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bluegreymid1"
+    android:background="@color/teal_dark"
     android:keepScreenOn="true"
     tools:context="org.thingagora.tripmaster.SpeedometerActivity">
 
@@ -25,7 +25,7 @@
             android:fontFamily="monospace"
             android:text="@string/speed_value"
             android:textAlignment="center"
-            android:textColor="@color/teal_main"
+            android:textColor="@color/bluegreylite"
             android:textSize="128sp"
             android:textStyle="bold" />
 
@@ -36,7 +36,7 @@
             android:fontFamily="monospace"
             android:text="@string/time_value"
             android:textAlignment="center"
-            android:textColor="@color/teal_main"
+            android:textColor="@color/bluegreylite"
             android:textSize="96sp"
             android:textStyle="bold" />
     </LinearLayout>
