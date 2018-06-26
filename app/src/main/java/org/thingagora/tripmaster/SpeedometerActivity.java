@@ -141,6 +141,10 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
         // Update time on start
         updateTime(Calendar.getInstance());
+
+        // If location permissions are not granted, don't display speed
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED)
+            ((TextView)findViewById(R.id.speed_text)).setText("");
     }
 
     @Override
