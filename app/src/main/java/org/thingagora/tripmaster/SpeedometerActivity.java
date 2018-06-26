@@ -139,6 +139,8 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         // while interacting with the UI.
         mContentView.setOnTouchListener(mDelayHideTouchListener);
 
+        // Update time on start
+        updateTime(Calendar.getInstance());
     }
 
     @Override
