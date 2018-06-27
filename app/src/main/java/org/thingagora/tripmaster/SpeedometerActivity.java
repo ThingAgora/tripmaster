@@ -32,7 +32,10 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     Location mLocation;
 
     // Speedometer view settings
-    static int speedErrMarginKph = 10;
+    static double speedErrMarginKph = 10;
+    static double speedErrFactor = 0.2;
+    // Multiply by 1 + factor up to threshold, then add margin
+    static double speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -211,13 +214,13 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
     @Override
     public void onLocationChanged(Location location) {
-        float mps = location.getSpeed();
-        int kph = (int) (mps * 3.6);
-        if (kph > speedErrMarginKph * 2)
+        double mps = location.getSpeed();
+        double kph = mps * 3.6;
+        if (kph < speedErrThresholdKph)
+            kph *= (1 + speedErrFactor);
+        else
             kph += speedErrMarginKph;
-        else if (kph > speedErrMarginKph)
-            kph += speedErrMarginKph / 2;
-        updateSpeedometer(kph);
+        updateSpeedometer((int)kph);
         updateTime(Calendar.getInstance());
     }
 
