@@ -1,0 +1,109 @@
+[
+  {
+    "base64": false, 
+    "datamode": "single", 
+    "datatype": "utf8", 
+    "host": "", 
+    "id": "193b7a7b.5a981e", 
+    "name": "id:lat,lon", 
+    "newline": "", 
+    "port": "10640", 
+    "server": "server", 
+    "topic": "", 
+    "type": "tcp in", 
+    "wires": [
+      [
+        "7162bc64.6d5714"
+      ]
+    ], 
+    "x": 100, 
+    "y": 80, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "active": true, 
+    "complete": "false", 
+    "console": "false", 
+    "id": "b9d97b6a.c449e8", 
+    "name": "", 
+    "type": "debug", 
+    "wires": [], 
+    "x": 670, 
+    "y": 80, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "func": "var locations = global.get(\"locations\") || {};\nvar id = msg.payload.split(\":\")[0];\nlocations[id] = {\n    \"lat\": Number(msg.payload.split(\":\")[1].split(\",\")[0]),\n    \"lon\": Number(msg.payload.split(\":\")[1].split(\",\")[1]),\n    \"ts\": Date.now()\n}\nglobal.set(\"locations\",locations);\nreturn msg;\n", 
+    "id": "7162bc64.6d5714", 
+    "name": "put location", 
+    "noerr": 0, 
+    "outputs": 1, 
+    "type": "function", 
+    "wires": [
+      [
+        "b9d97b6a.c449e8"
+      ]
+    ], 
+    "x": 310, 
+    "y": 80, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "id": "9e605c13.b51a2", 
+    "method": "get", 
+    "name": "location", 
+    "swaggerDoc": "", 
+    "type": "http in", 
+    "url": "/location", 
+    "wires": [
+      [
+        "c6703e12.0edff"
+      ]
+    ], 
+    "x": 90, 
+    "y": 160, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "id": "7da22311.d3ed0c", 
+    "name": "location", 
+    "type": "http response", 
+    "wires": [], 
+    "x": 680, 
+    "y": 160, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "func": "var locations = global.get(\"locations\") || {};\nmsg.payload.location = locations[msg.payload.id] || {\"lat\":0,\"lon\":0,\"ts\":0};\nreturn msg;\n", 
+    "id": "c6703e12.0edff", 
+    "name": "get location", 
+    "noerr": 0, 
+    "outputs": 1, 
+    "type": "function", 
+    "wires": [
+      [
+        "b9d97b6a.c449e8", 
+        "90a6f05c.d084d"
+      ]
+    ], 
+    "x": 250, 
+    "y": 160, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "func": "var id = msg.payload.id;\nvar loc = msg.payload.location;\nvar txtlat = loc.lat.toFixed(4);\nvar txtlon = loc.lon.toFixed(4);\n\nvar response = \n\"<html>\" +\n\"<body>\" +\n\n\"<center><h1>\" + id + \"</h1></center>\" +\n\n\"<hr>\" +\n\"<pre>\" + \nDate(loc.ts) + \"\\n\\n\" +\n\"Latitude:  \" + txtlat + \"\\n\" +\n\"Longitude: \" + txtlon + \"\\n\" +\n\"</pre>\" + \n\"<hr>\" +\n\n'<iframe width=\"100%\" height=\"800px\" min-height=\"600px\" frameborder=\"0\" allowfullscreen ' + \n'src=\"http://umap.openstreetmap.fr/en/map/geoloc_239789#19/' + \ntxtlat + '/' + txtlon + '?scaleControl=false&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=false\">' +\n'</iframe>' +\n'<p><a href=\"http://umap.openstreetmap.fr/en/map/geoloc_239789#19/' + txtlat + '/' + txtlon + '\">See full screen</a></p>' +\n\n\"</body>\" +\n\"</html>\" ;\n\nmsg.payload = response;\nreturn msg;\n", 
+    "id": "90a6f05c.d084d", 
+    "name": "osm zoom 19", 
+    "noerr": 0, 
+    "outputs": 1, 
+    "type": "function", 
+    "wires": [
+      [
+        "7da22311.d3ed0c"
+      ]
+    ], 
+    "x": 500, 
+    "y": 160, 
+    "z": "24756273.47c1c6"
+  }
+]
