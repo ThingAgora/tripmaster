@@ -1,5 +1,26 @@
 [
   {
+    "birthPayload": "", 
+    "birthQos": "0", 
+    "birthRetain": null, 
+    "birthTopic": "", 
+    "broker": "localhost", 
+    "cleansession": true, 
+    "clientid": "", 
+    "compatmode": true, 
+    "id": "8581695c.50dca8", 
+    "keepalive": "15", 
+    "port": "1883", 
+    "type": "mqtt-broker", 
+    "usetls": false, 
+    "verifyservercert": true, 
+    "willPayload": "", 
+    "willQos": "0", 
+    "willRetain": null, 
+    "willTopic": "", 
+    "z": "24756273.47c1c6"
+  }, 
+  {
     "base64": false, 
     "datamode": "single", 
     "datatype": "utf8", 
@@ -41,7 +62,8 @@
     "type": "function", 
     "wires": [
       [
-        "b9d97b6a.c449e8"
+        "b9d97b6a.c449e8", 
+        "63467cb6.d58c2c"
       ]
     ], 
     "x": 310, 
@@ -61,7 +83,7 @@
       ]
     ], 
     "x": 90, 
-    "y": 160, 
+    "y": 200, 
     "z": "24756273.47c1c6"
   }, 
   {
@@ -70,7 +92,7 @@
     "type": "http response", 
     "wires": [], 
     "x": 680, 
-    "y": 160, 
+    "y": 200, 
     "z": "24756273.47c1c6"
   }, 
   {
@@ -87,7 +109,7 @@
       ]
     ], 
     "x": 250, 
-    "y": 160, 
+    "y": 200, 
     "z": "24756273.47c1c6"
   }, 
   {
@@ -103,7 +125,20 @@
       ]
     ], 
     "x": 500, 
-    "y": 160, 
+    "y": 200, 
+    "z": "24756273.47c1c6"
+  }, 
+  {
+    "broker": "8581695c.50dca8", 
+    "id": "63467cb6.d58c2c", 
+    "name": "", 
+    "qos": "", 
+    "retain": "", 
+    "topic": "/allsensors/location", 
+    "type": "mqtt out", 
+    "wires": [], 
+    "x": 690, 
+    "y": 140, 
     "z": "24756273.47c1c6"
   }
 ]
