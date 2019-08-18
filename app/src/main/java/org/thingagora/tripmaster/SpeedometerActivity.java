@@ -47,7 +47,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 5000;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -157,7 +157,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100);
+        delayedHide(500);
     }
 
     private void toggle() {
