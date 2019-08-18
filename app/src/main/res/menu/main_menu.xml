@@ -7,4 +7,9 @@
         android:title="Speedometer"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/action_settings"
+        android:icon="@mipmap/ic_settings"
+        android:title="Settings"
+        app:showAsAction="ifRoom"/>
+
 </menu>
