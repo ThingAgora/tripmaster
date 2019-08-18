@@ -3,18 +3,14 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="org.thingagora.tripmaster.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
+        android:fragment="org.thingagora.tripmaster.SettingsActivity$LocationPreferenceFragment"
+        android:icon="@drawable/stt_location"
+        android:title="@string/pref_header_location" />
 
     <header
-        android:fragment="org.thingagora.tripmaster.SettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
+        android:fragment="org.thingagora.tripmaster.SettingsActivity$SpeedometerPreferenceFragment"
+        android:icon="@drawable/stt_speedometer"
+        android:title="@string/pref_header_speedometer" />
 
-    <header
-        android:fragment="org.thingagora.tripmaster.SettingsActivity$DataSyncPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
-        android:title="@string/pref_header_data_sync" />
 
 </preference-headers>
