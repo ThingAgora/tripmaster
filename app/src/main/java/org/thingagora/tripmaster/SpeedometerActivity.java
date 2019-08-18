@@ -126,7 +126,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         setContentView(R.layout.activity_speedometer);
 
         mVisible = true;
-        mContentView = findViewById(R.id.speed_text);
+        mContentView = findViewById(R.id.speedometer_view);
 
 
         // Set up the user interaction to manually show or hide the system UI.
