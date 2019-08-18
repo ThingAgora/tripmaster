@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -104,6 +105,12 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
             return false;
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
