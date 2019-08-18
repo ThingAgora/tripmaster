@@ -1,12 +1,14 @@
 package org.thingagora.tripmaster;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -110,6 +112,19 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override
