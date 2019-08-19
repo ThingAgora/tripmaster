@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -119,24 +118,15 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     }
 
     public void updatePreferences(SharedPreferences prefs) {
-        String value;
         minDistanceUpdateMeters = 0;
-        value = prefs.getString("location_frequency","1");
-        minTimeUpdateSeconds = Integer.valueOf(value);
-        Log.i("TRIP_PREFS", String.format("minTimeUpdateSeconds: %d", minTimeUpdateSeconds));
-        value = prefs.getString("err_max","10");
-        speedErrMarginKph = Float.valueOf(value);
-        Log.i("TRIP_PREFS", String.format("speedErrMarginKph: %f", speedErrMarginKph));
-        value = prefs.getString("err_percent","20");
-        speedErrFactor = Float.valueOf(value) / 100;
-        Log.i("TRIP_PREFS", String.format("speedErrFactor: %f", speedErrFactor));
+        minTimeUpdateSeconds = Integer.valueOf(prefs.getString("location_frequency","1"));
+        speedErrMarginKph = Float.valueOf(prefs.getString("err_max","10"));
+        speedErrFactor = Float.valueOf(prefs.getString("err_percent","20")) / 100;
         speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
-        Log.i("TRIP_PREFS", String.format("speedErrThresholdKph: %f", speedErrThresholdKph));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String s) {
-        Log.i("TRIP_PREFS", String.format("onSharedPreferenceChanged: %s = %s", s, prefs.getString(s,"")));
         updatePreferences(prefs);
     }
 
