@@ -128,6 +128,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String s) {
         updatePreferences(prefs);
+        if (s.equals("location_frequency")) {
+            restartTracking();
+        }
     }
 
     @Override
@@ -162,14 +165,11 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
         // Initialize location manager and current location
         int permissionCheck = ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_FINE_LOCATION");
-            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             mLocationManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    minTimeUpdateSeconds * 1000,
-                    minDistanceUpdateMeters,
-                    this);
-            }
+            startTracking();
+        }
 
         setContentView(R.layout.activity_speedometer);
 
@@ -206,6 +206,37 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(500);
+    }
+
+    private boolean startTracking() {
+        if (mLocationManager == null)
+            return false;
+        try {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    minTimeUpdateSeconds * 1000,
+                    minDistanceUpdateMeters,
+                    this);
+        }
+        catch (SecurityException se) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean stopTracking() {
+        if (mLocationManager == null)
+            return false;
+        try {
+            mLocationManager.removeUpdates(this);
+        }
+        catch (SecurityException se) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean restartTracking() {
+        return stopTracking() && startTracking();
     }
 
     private void toggle() {
