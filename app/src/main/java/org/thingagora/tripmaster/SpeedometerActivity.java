@@ -1,41 +1,45 @@
 package org.thingagora.tripmaster;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.TextView;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-
 import java.util.Calendar;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SpeedometerActivity extends AppCompatActivity implements LocationListener {
+public class SpeedometerActivity extends AppCompatActivity implements LocationListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // GPS Location update settings
-    static int minTimeUpdateSeconds = 1;
-    static float minDistanceUpdateMeters = 0;
+    private int minTimeUpdateSeconds;
+    private float minDistanceUpdateMeters;
 
     // GPS Location manager and current location
     LocationManager mLocationManager;
     Location mLocation;
 
     // Speedometer view settings
-    static double speedErrMarginKph = 10;
-    static double speedErrFactor = 0.2;
+    private double speedErrMarginKph;
+    private double speedErrFactor;
     // Multiply by 1 + factor up to threshold, then add margin
-    static double speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
+    private double speedErrThresholdKph;
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -47,7 +51,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 5000;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -105,28 +109,72 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         }
     };
 
+    public SpeedometerActivity() {
+        minDistanceUpdateMeters = 0;
+        minTimeUpdateSeconds = 1;
+        speedErrMarginKph = 10;
+        speedErrFactor = 0.2;
+        speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
+    }
+
+    public void updatePreferences(SharedPreferences prefs) {
+        minDistanceUpdateMeters = 0;
+        minTimeUpdateSeconds = Integer.valueOf(prefs.getString("location_frequency","1"));
+        speedErrMarginKph = Float.valueOf(prefs.getString("err_max","10"));
+        speedErrFactor = Float.valueOf(prefs.getString("err_percent","20")) / 100;
+        speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String s) {
+        updatePreferences(prefs);
+        if (s.equals("location_frequency")) {
+            restartTracking();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Context appContext = getApplicationContext();
 
+        // Manage preferences
+        PreferenceManager.getDefaultSharedPreferences(appContext)
+                .registerOnSharedPreferenceChangeListener(this);
+        updatePreferences(PreferenceManager.getDefaultSharedPreferences(appContext));
 
         // Initialize location manager and current location
         int permissionCheck = ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_FINE_LOCATION");
-            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             mLocationManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
             mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    minTimeUpdateSeconds * 1000,
-                    minDistanceUpdateMeters,
-                    this);
-            }
+            startTracking();
+        }
 
         setContentView(R.layout.activity_speedometer);
 
         mVisible = true;
-        mContentView = findViewById(R.id.speed_text);
+        mContentView = findViewById(R.id.speedometer_view);
 
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -157,7 +205,38 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100);
+        delayedHide(500);
+    }
+
+    private boolean startTracking() {
+        if (mLocationManager == null)
+            return false;
+        try {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    minTimeUpdateSeconds * 1000,
+                    minDistanceUpdateMeters,
+                    this);
+        }
+        catch (SecurityException se) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean stopTracking() {
+        if (mLocationManager == null)
+            return false;
+        try {
+            mLocationManager.removeUpdates(this);
+        }
+        catch (SecurityException se) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean restartTracking() {
+        return stopTracking() && startTracking();
     }
 
     private void toggle() {

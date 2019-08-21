@@ -1,0 +1,16 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="org.thingagora.tripmaster.SettingsActivity$LocationPreferenceFragment"
+        android:icon="@drawable/stt_location"
+        android:title="@string/pref_header_location" />
+
+    <header
+        android:fragment="org.thingagora.tripmaster.SettingsActivity$SpeedometerPreferenceFragment"
+        android:icon="@drawable/stt_speedometer"
+        android:title="@string/pref_header_speedometer" />
+
+
+</preference-headers>
