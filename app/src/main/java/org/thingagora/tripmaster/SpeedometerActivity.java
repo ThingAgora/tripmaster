@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Calendar;
 
 /**
@@ -34,6 +37,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     // GPS Location manager and current location
     LocationManager mLocationManager;
     Location mLocation;
+
+    // Logging server
+    private Socket mLoggerSocket;
 
     // Speedometer view settings
     private double speedErrMarginKph;
@@ -237,6 +243,30 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
     private boolean restartTracking() {
         return stopTracking() && startTracking();
+    }
+
+    private boolean loggerConnect(String host, int port) {
+        if (mLoggerSocket != null && mLoggerSocket.isConnected())
+            return true;
+        try {
+            mLoggerSocket = new Socket(host, port);
+        }
+        catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean loggerDisconnect() {
+        if (mLoggerSocket == null)
+            return false;
+        try {
+            mLoggerSocket.close();
+        }
+        catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
     private void toggle() {
