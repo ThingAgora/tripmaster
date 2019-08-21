@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +20,14 @@ import android.widget.TextView;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -40,6 +45,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
     // Logging server
     private Socket mLoggerSocket;
+    private String mLoggerUser = "xxx";
+    private String mLoggerHost = "aaa.bbb.ccc";
+    private int mLoggerPort = 12345;
 
     // Speedometer view settings
     private double speedErrMarginKph;
@@ -162,6 +170,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         Context appContext = getApplicationContext();
 
         // Manage preferences
@@ -249,11 +260,13 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         if (mLoggerSocket != null && mLoggerSocket.isConnected())
             return true;
         try {
+            Log.i("TRIP CONNECT","Connecting");
             mLoggerSocket = new Socket(host, port);
         }
         catch (IOException e) {
             return false;
         }
+        Log.i("TRIP CONNECT","Connected");
         return true;
     }
 
@@ -266,6 +279,25 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         catch (IOException e) {
             return false;
         }
+        return true;
+    }
+
+    private boolean logLocation() {
+        if (!loggerConnect(mLoggerHost, mLoggerPort))
+            return false;
+        String logString = String.format(Locale.US,"%s:%.04f,%.04f",mLoggerUser,mLocation.getLatitude(),mLocation.getLongitude());
+        Log.i("TRIP STRING",logString);
+        byte[] logBytes = logString.getBytes(StandardCharsets.US_ASCII);
+        OutputStream outputStream;
+        try {
+            outputStream = mLoggerSocket.getOutputStream();
+            outputStream.write(logBytes);
+            outputStream.close();
+        }
+        catch (IOException e) {
+            return false;
+        }
+        Log.i("TRIP WRITE","OK");
         return true;
     }
 
@@ -331,6 +363,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
             kph += speedErrMarginKph;
         updateSpeedometer((int)kph);
         updateTime(Calendar.getInstance());
+        logLocation();
     }
 
     @Override
