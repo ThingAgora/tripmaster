@@ -22,56 +22,56 @@
   }, 
   {
     "base64": false, 
-    "datamode": "single", 
+    "datamode": "stream", 
     "datatype": "utf8", 
     "host": "", 
-    "id": "193b7a7b.5a981e", 
+    "id": "e35d36fa.5544d", 
     "name": "id:lat,lon", 
-    "newline": "", 
+    "newline": " ", 
     "port": "10640", 
     "server": "server", 
     "topic": "", 
     "type": "tcp in", 
     "wires": [
       [
-        "7162bc64.6d5714"
+        "a69ac663.1afee"
       ]
     ], 
     "x": 100, 
-    "y": 80, 
+    "y": 40, 
     "z": "24756273.47c1c6"
   }, 
   {
     "active": true, 
     "complete": "false", 
     "console": "false", 
-    "id": "b9d97b6a.c449e8", 
+    "id": "88e13e6.df3614", 
     "name": "", 
     "type": "debug", 
     "wires": [], 
     "x": 670, 
-    "y": 80, 
+    "y": 40, 
     "z": "24756273.47c1c6"
   }, 
   {
     "func": "var locations = global.get(\"locations\") || {};\nvar id = msg.payload.split(\":\")[0];\nlocations[id] = {\n    \"lat\": Number(msg.payload.split(\":\")[1].split(\",\")[0]),\n    \"lon\": Number(msg.payload.split(\":\")[1].split(\",\")[1]),\n    \"ts\": Date.now()\n}\nglobal.set(\"locations\",locations);\nreturn msg;\n", 
-    "id": "7162bc64.6d5714", 
+    "id": "a69ac663.1afee", 
     "name": "put location", 
     "noerr": 0, 
     "outputs": 1, 
     "type": "function", 
     "wires": [
       [
-        "b9d97b6a.c449e8", 
-        "63467cb6.d58c2c"
+        "88e13e6.df3614", 
+        "ea81c891.a3a1d8"
       ]
     ], 
     "x": 310, 
-    "y": 80, 
+    "y": 40, 
     "z": "24756273.47c1c6"
   }, 
   {
-    "id": "9e605c13.b51a2", 
+    "id": "97339725.eea49", 
     "method": "get", 
     "name": "location", 
     "swaggerDoc": "", 
@@ -79,58 +79,58 @@
     "url": "/location", 
     "wires": [
       [
-        "c6703e12.0edff"
+        "d494af05.da8cf8"
       ]
     ], 
     "x": 90, 
-    "y": 200, 
+    "y": 160, 
     "z": "24756273.47c1c6"
   }, 
   {
-    "id": "7da22311.d3ed0c", 
+    "id": "fed4332a.bff218", 
     "name": "location", 
     "type": "http response", 
     "wires": [], 
     "x": 680, 
-    "y": 200, 
+    "y": 160, 
     "z": "24756273.47c1c6"
   }, 
   {
     "func": "var locations = global.get(\"locations\") || {};\nmsg.payload.location = locations[msg.payload.id] || {\"lat\":0,\"lon\":0,\"ts\":0};\nreturn msg;\n", 
-    "id": "c6703e12.0edff", 
+    "id": "d494af05.da8cf8", 
     "name": "get location", 
     "noerr": 0, 
     "outputs": 1, 
     "type": "function", 
     "wires": [
       [
-        "b9d97b6a.c449e8", 
-        "90a6f05c.d084d"
+        "88e13e6.df3614", 
+        "6c3c235a.40a1d4"
       ]
     ], 
     "x": 250, 
-    "y": 200, 
+    "y": 160, 
     "z": "24756273.47c1c6"
   }, 
   {
     "func": "var id = msg.payload.id;\nvar loc = msg.payload.location;\nvar txtlat = loc.lat.toFixed(4);\nvar txtlon = loc.lon.toFixed(4);\n\nvar response = \n\"<html>\" +\n\n'<head>' +\n'<script>' +\n'function drawTarget() {' +\n'\tvar cnv = document.getElementById(\"mapoverlay\");' +\n'\tvar gc = cnv.getContext(\"2d\");' +\n'\tgc.beginPath();' +\n'\tgc.arc(cnv.width/2,cnv.height/2, 10, 0, 2 * Math.PI);' +\n'\tgc.moveTo(cnv.width/2-10,cnv.height/2);' +\n'\tgc.lineTo(cnv.width/2+10,cnv.height/2);' +\n'\tgc.moveTo(cnv.width/2,cnv.height/2-10);' +\n'\tgc.lineTo(cnv.width/2,cnv.height/2+10);' +\n'\tgc.stroke();' +\n'}' +\n'</script>' +\n'</head>' +\n\n'<body onload=\"drawTarget()\">' +\n\n\"<center><h1>\" + id + \"</h1></center>\" +\n\n\"<hr>\" +\n\"<pre>\" + \nnew Date(loc.ts) + \"\\n\\n\" +\n\"Latitude:  \" + txtlat + \"\\n\" +\n\"Longitude: \" + txtlon + \"\\n\" +\n\"</pre>\" + \n\"<hr>\" +\n\n'<div style=\"position:relative;width:100%;height:400px;min-height:300px\">' +\n'<iframe style=\"position:absolute;width:100%;height:100%;top:0px;left:0px;z-index:1\" frameborder=\"0\" allowfullscreen ' + \n'src=\"http://umap.openstreetmap.fr/en/map/geoloc_239789#19/' + \ntxtlat + '/' + txtlon + '?scaleControl=false&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=false\">' +\n'</iframe>' +\n'<canvas style=\"position:absolute;width:100%;height:100%;top:0px;left:0px;z-index:2;pointer-events:none\" id=\"mapoverlay\">' + \n'</canvas>' +\n'</div>' +\n\"</body>\" +\n\"</html>\" ;\n\nmsg.payload = response;\nreturn msg;\n", 
-    "id": "90a6f05c.d084d", 
+    "id": "6c3c235a.40a1d4", 
     "name": "osm zoom 19", 
     "noerr": 0, 
     "outputs": 1, 
     "type": "function", 
     "wires": [
       [
-        "7da22311.d3ed0c"
+        "fed4332a.bff218"
       ]
     ], 
     "x": 500, 
-    "y": 200, 
+    "y": 160, 
     "z": "24756273.47c1c6"
   }, 
   {
     "broker": "8581695c.50dca8", 
-    "id": "63467cb6.d58c2c", 
+    "id": "ea81c891.a3a1d8", 
     "name": "", 
     "qos": "", 
     "retain": "", 
@@ -138,7 +138,7 @@
     "type": "mqtt out", 
     "wires": [], 
     "x": 690, 
-    "y": 140, 
+    "y": 100, 
     "z": "24756273.47c1c6"
   }
 ]

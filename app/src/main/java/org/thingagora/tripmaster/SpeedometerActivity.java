@@ -285,14 +285,13 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
     private boolean logLocation() {
         if (!loggerConnect(mLoggerHost, mLoggerPort))
             return false;
-        String logString = String.format(Locale.US,"%s:%.04f,%.04f",mLoggerUser,mLocation.getLatitude(),mLocation.getLongitude());
+        String logString = String.format(Locale.US,"%s:%.04f,%.04f ",mLoggerUser,mLocation.getLatitude(),mLocation.getLongitude());
         Log.i("TRIP STRING",logString);
         byte[] logBytes = logString.getBytes(StandardCharsets.US_ASCII);
         OutputStream outputStream;
         try {
             outputStream = mLoggerSocket.getOutputStream();
             outputStream.write(logBytes);
-            outputStream.close();
         }
         catch (IOException e) {
             return false;
