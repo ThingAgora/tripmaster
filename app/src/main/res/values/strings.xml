@@ -30,6 +30,18 @@
         <item>3600</item>
     </string-array>
 
+    <!-- Logger -->
+    <string name="pref_header_logger">Logger</string>
+
+    <string name="pref_title_logger_user">User</string>
+    <string name="pref_default_logger_user"></string>
+
+    <string name="pref_title_logger_host">Logger host</string>
+    <string name="pref_default_logger_host">127.0.0.1</string>
+
+    <string name="pref_title_logger_port">Logger port</string>
+    <string name="pref_default_logger_port">12345</string>
+
     <!-- Speedometer -->
     <string name="pref_header_speedometer">Speedometer</string>
 

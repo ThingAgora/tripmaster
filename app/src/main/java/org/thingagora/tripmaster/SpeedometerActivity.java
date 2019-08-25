@@ -45,9 +45,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
 
     // Logging server
     private Socket mLoggerSocket;
-    private String mLoggerUser = "xxx";
-    private String mLoggerHost = "aaa.bbb.ccc";
-    private int mLoggerPort = 12345;
+    private String mLoggerUser;
+    private String mLoggerHost;
+    private int mLoggerPort;
 
     // Speedometer view settings
     private double speedErrMarginKph;
@@ -129,6 +129,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         speedErrMarginKph = 10;
         speedErrFactor = 0.2;
         speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
+        mLoggerUser = "";
+        mLoggerHost = "127.0.0.1";
+        mLoggerPort = 12345;
     }
 
     public void updatePreferences(SharedPreferences prefs) {
@@ -137,6 +140,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         speedErrMarginKph = Float.valueOf(prefs.getString("err_max","10"));
         speedErrFactor = Float.valueOf(prefs.getString("err_percent","20")) / 100;
         speedErrThresholdKph = speedErrMarginKph / speedErrFactor;
+        mLoggerUser = prefs.getString("logger_user","");
+        mLoggerHost = prefs.getString("logger_host","127.0.0.1");
+        mLoggerPort = Integer.valueOf(prefs.getString("logger_port","12345"));
     }
 
     @Override
@@ -144,6 +150,9 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         updatePreferences(prefs);
         if (s.equals("location_frequency")) {
             restartTracking();
+        }
+        if (s.equals("logger_host") || s.equals("logger_port")) {
+            loggerDisconnect();
         }
     }
 

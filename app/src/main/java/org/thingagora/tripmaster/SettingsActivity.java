@@ -127,13 +127,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
+                || LoggerPreferenceFragment.class.getName().equals(fragmentName)
                 || LocationPreferenceFragment.class.getName().equals(fragmentName)
                 || SpeedometerPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
+     * This fragment shows Speedometer preferences only.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class SpeedometerPreferenceFragment extends PreferenceFragment {
@@ -153,8 +153,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * This fragment shows data and sync preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
+     * This fragment shows Location preferences only.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class LocationPreferenceFragment extends PreferenceFragment {
@@ -169,6 +168,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("location_frequency"));
+        }
+
+    }
+
+    /**
+     * This fragment shows Logger preferences only.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class LoggerPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_logger);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("logger_user"));
+            bindPreferenceSummaryToValue(findPreference("logger_host"));
+            bindPreferenceSummaryToValue(findPreference("logger_port"));
         }
 
     }

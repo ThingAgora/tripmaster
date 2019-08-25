@@ -8,6 +8,11 @@
         android:title="@string/pref_header_location" />
 
     <header
+        android:fragment="org.thingagora.tripmaster.SettingsActivity$LoggerPreferenceFragment"
+        android:icon="@drawable/stt_logger"
+        android:title="@string/pref_header_logger" />
+
+    <header
         android:fragment="org.thingagora.tripmaster.SettingsActivity$SpeedometerPreferenceFragment"
         android:icon="@drawable/stt_speedometer"
         android:title="@string/pref_header_speedometer" />
