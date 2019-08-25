@@ -184,7 +184,6 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         int permissionCheck = ContextCompat.checkSelfPermission(appContext,"android.permission.ACCESS_FINE_LOCATION");
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             mLocationManager = (LocationManager) appContext.getSystemService(Context.LOCATION_SERVICE);
-            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             startTracking();
         }
 
@@ -229,12 +228,14 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
         if (mLocationManager == null)
             return false;
         try {
+            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     minTimeUpdateSeconds * 1000,
                     minDistanceUpdateMeters,
                     this);
         }
         catch (SecurityException se) {
+            mLocationManager = null;
             return false;
         }
         return true;
@@ -247,6 +248,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
             mLocationManager.removeUpdates(this);
         }
         catch (SecurityException se) {
+            mLocationManager = null;
             return false;
         }
         return true;
@@ -264,6 +266,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
             mLoggerSocket = new Socket(host, port);
         }
         catch (IOException e) {
+            mLoggerSocket = null;
             return false;
         }
         Log.i("TRIP CONNECT","Connected");
@@ -277,8 +280,10 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
             mLoggerSocket.close();
         }
         catch (IOException e) {
+            mLoggerSocket = null;
             return false;
         }
+        mLoggerSocket = null;
         return true;
     }
 
@@ -294,6 +299,7 @@ public class SpeedometerActivity extends AppCompatActivity implements LocationLi
             outputStream.write(logBytes);
         }
         catch (IOException e) {
+            loggerDisconnect();
             return false;
         }
         Log.i("TRIP WRITE","OK");
